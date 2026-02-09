@@ -42,10 +42,10 @@
     // 2. 等待API初始化完成(重要)
     LibraryNavigationAPI.init(function(初始化成功) {
         if (初始化成功) {
-            console.log('✅ API准备好了，可以开始用了！');
+            console.log(' API准备好了，可以开始用了！');
             // 在这里写你的代码
         } else {
-            console.error('❌ API初始化失败');
+            console.error(' API初始化失败');
         }
     });
     我准备了五个函数：
@@ -107,6 +107,7 @@
     5，粘到触屏设备浏览器上，打开。
 
     6，就能在移动端看效果了。
+
 
 
 
