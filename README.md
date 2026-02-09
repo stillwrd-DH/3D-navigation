@@ -24,7 +24,7 @@
 
 #3D_navigation_api.js方面：
 
--API是可以调用的，
+-API调用
 
     <!-- 直接写文件名 -->
     <script src="3D_navigation_api.js"></script>
@@ -107,6 +107,7 @@
     5，粘到触屏设备浏览器上，打开。
 
     6，就能在移动端看效果了。
+
 
 
 
