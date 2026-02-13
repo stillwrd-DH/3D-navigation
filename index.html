@@ -282,8 +282,8 @@
         mainLight.castShadow = true;
 
         // 阴影参数适配100m场景
-        mainLight.shadow.mapSize.width = 1024;
-        mainLight.shadow.mapSize.height = 1024;
+        mainLight.shadow.mapSize.width = 512;
+        mainLight.shadow.mapSize.height = 512;
         mainLight.shadow.camera.near = 0.1;
         mainLight.shadow.camera.far = 150; // 覆盖整个100m场景
         mainLight.shadow.camera.left = -60;
@@ -2577,6 +2577,7 @@
     <script src="3D_navigation_api.js"></script>
 </body>
 </html>
+
 
 
 
