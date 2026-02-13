@@ -11,6 +11,13 @@
     
     <!-- 字体图标库（如果还没有的话） -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preload" href="3D model/bookshelf.glb" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="3D model/floor.glb" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="3D model/door.glb" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="3D model/communication_zone.glb" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="3D model/outer.glb" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="3D model/outerworld.glb" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="3D model/table_chairs.glb" as="fetch" crossorigin="anonymous">
     
     <style>
     /* 原有样式保持不变 */
@@ -1653,7 +1660,8 @@
                 }
             }
         }
-
+        function loadModels()
+        {
             //floor.glb文件为地板(21.0m*17.0m*0.01m)，原点在角落，x-8.5,y-0.01,z+9.5是修正到中心的坐标
             loader.load('./3D model/floor.glb', (gltf) => {
             const model = gltf.scene;
@@ -1778,7 +1786,9 @@
             });
                 onModelLoaded(); // 添加这行
         });
+    }
 
+    loadModels();
     // ========== 创建透明玻璃围墙 ==========
     function createGlassWall() {
         // 玻璃材质
@@ -2800,6 +2810,7 @@
 </body>
 
 </html>
+
 
 
 
