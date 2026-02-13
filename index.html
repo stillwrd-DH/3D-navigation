@@ -297,7 +297,7 @@
 
         // 3. 补光（消除主光造成的硬阴影）
         const fillLight = new THREE.DirectionalLight(0xffffff, 0.3);
-        fillLight.position.set(-30, 30, -20);
+        fillLight.position.set(30, 30, 20);
         scene.add(fillLight);
 
         // 天蓝色雾，和你的背景 #87CEEB 完全匹配
@@ -2577,6 +2577,7 @@
     <script src="3D_navigation_api.js"></script>
 </body>
 </html>
+
 
 
 
