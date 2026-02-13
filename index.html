@@ -278,7 +278,7 @@
 
         // 2. 主方向光（模拟太阳光，投下柔和阴影）
         const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        mainLight.position.set(30, 35, 20); // 高角度斜射，符合100m场景尺寸
+        mainLight.position.set(-30, 35, -20); // 高角度斜射，符合100m场景尺寸
         mainLight.castShadow = true;
 
         // 阴影参数适配100m场景
@@ -2577,4 +2577,5 @@
     <script src="3D_navigation_api.js"></script>
 </body>
 </html>
+
 
