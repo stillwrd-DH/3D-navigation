@@ -2402,6 +2402,64 @@
                 // 根据命令类型执行 API
                 let result;
                 switch (command.action) {
+
+                    case 'init':
+                    // 验证数据
+                    if (!command.data || !command.data.start || !command.data.end) {
+                        sendMessageToMiniProgram({
+                            type: 'error',
+                            message: 'init命令缺少start或end数据',
+                            command: command.action,
+                            messageId: command.messageId
+                        });
+                        return;
+                    }
+                    
+                    // 设置起点
+                    const startResult = LibraryNavigationAPI.setStartPoint(command.data.start);
+                    if (!startResult.success) {
+                        sendMessageToMiniProgram({
+                            type: 'error',
+                            message: '设置起点失败: ' + startResult.error,
+                            command: command.action,
+                            messageId: command.messageId
+                        });
+                        return;
+                    }
+                    
+                    // 设置终点
+                    const endResult = LibraryNavigationAPI.setEndPoint(command.data.end);
+                    if (!endResult.success) {
+                        sendMessageToMiniProgram({
+                            type: 'error',
+                            message: '设置终点失败: ' + endResult.error,
+                            command: command.action,
+                            messageId: command.messageId
+                        });
+                        return;
+                    }
+                    
+                    // 计算路径
+                    const calcResult = LibraryNavigationAPI.calculatePath();
+                    if (!calcResult.success) {
+                        sendMessageToMiniProgram({
+                            type: 'error',
+                            message: '计算路径失败: ' + calcResult.error,
+                            command: command.action,
+                            messageId: command.messageId
+                        });
+                        return;
+                    }
+                    
+                    // 全部成功，返回结果
+                    sendMessageToMiniProgram({
+                        type: 'initResult',
+                        success: true,
+                        data: { message: '初始化成功' },
+                        messageId: command.messageId,
+                        timestamp: Date.now()
+                    });
+                    break;
                     case 'setStart':
                         result = LibraryNavigationAPI.setStartPoint(command.data);
                         break;
@@ -2672,6 +2730,7 @@
     <script src="3D_navigation_api.js"></script>
 </body>
 </html>
+
 
 
 
