@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
     
     <!-- 字体图标库（如果还没有的话） -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -2366,6 +2367,99 @@
         showClickHint(message);
     }
 
+        // ========== 小程序通信相关 ==========
+        // 向小程序发送消息
+        function sendMessageToMiniProgram(data) {
+            if (window.wx && window.wx.miniProgram) {
+                window.wx.miniProgram.postMessage({
+                    data: data
+                });
+                console.log('[WebView] 发送消息到小程序:', data);
+            } else {
+                console.log('[WebView] 不在小程序环境，无法发送消息:', data);
+            }
+        }
+        
+        // 处理 URL hash 变化
+        function handleHashChange() {
+            const hash = window.location.hash.substring(1); // 去掉 '#'
+            if (!hash) return;
+            
+            try {
+                const command = JSON.parse(decodeURIComponent(hash));
+                console.log('[WebView] 收到命令:', command);
+                
+                // 检查 API 是否就绪
+                if (!window.LibraryNavigationAPI) {
+                    console.error('[WebView] API 未就绪');
+                    sendMessageToMiniProgram({
+                        type: 'error',
+                        message: 'API 未就绪',
+                        command: command.action,
+                        messageId: command.messageId
+                    });
+                    return;
+                }
+                
+                // 根据命令类型执行 API
+                let result;
+                switch (command.action) {
+                    case 'setStart':
+                        result = LibraryNavigationAPI.setStartPoint(command.data);
+                        break;
+                    case 'setEnd':
+                        result = LibraryNavigationAPI.setEndPoint(command.data);
+                        break;
+                    case 'calculate':
+                        result = LibraryNavigationAPI.calculatePath();
+                        break;
+                    case 'clear':
+                        result = LibraryNavigationAPI.clear();
+                        break;
+                    case 'getStatus':
+                        result = LibraryNavigationAPI.getStatus();
+                        break;
+                    default:
+                        console.warn('[WebView] 未知命令:', command.action);
+                        sendMessageToMiniProgram({
+                            type: 'error',
+                            message: '未知命令',
+                            command: command.action,
+                            messageId: command.messageId
+                        });
+                        return;
+                }
+                
+                // 将执行结果返回给小程序
+                sendMessageToMiniProgram({
+                    type: command.action + 'Result',
+                    success: result?.success || false,
+                    data: result,
+                    messageId: command.messageId,
+                    timestamp: Date.now()
+                });
+                
+            } catch (e) {
+                console.error('[WebView] 处理 hash 失败:', e);
+                sendMessageToMiniProgram({
+                    type: 'error',
+                    message: e.message,
+                    error: e.toString()
+                });
+            }
+        }
+        
+        // 监听 hash 变化
+        window.addEventListener('hashchange', handleHashChange);
+        
+        // 页面加载后，处理初始 hash（如果有）
+        window.addEventListener('load', function() {
+            // 延迟一点确保 API 可能已初始化
+            setTimeout(() => {
+                handleHashChange();
+            }, 500);
+        });
+        
         // ========== 按钮事件监听 ==========
         document.addEventListener('DOMContentLoaded', function() {
             const startBtn = document.getElementById('startBtn');
@@ -2462,6 +2556,9 @@
                 LibraryNavigationAPI.manualInit(function(success) {
                     if (success) {
                         console.log('[API] 手动初始化成功');
+
+                        // 处理可能已经存在的 hash 命令
+                        handleHashChange(); 
                         
                         // 更新API状态显示
                         const statusElement = document.getElementById('apiStatus');
@@ -2577,6 +2674,7 @@
     <script src="3D_navigation_api.js"></script>
 </body>
 </html>
+
 
 
 
