@@ -108,6 +108,97 @@
 
     6，就能在移动端看效果了。
 
+#与微信小程序通信
+
+-本系统通过 URL hash 接收小程序指令，并通过 wx.miniProgram.postMessage 返回结果。
+
+    -1. 通信流程
+    
+    -javascript
+    // 小程序端：修改 web-view 的 src
+    const command = {
+      action: 'init',           // 动作: init/setStart/setEnd/calculate/clear/getStatus
+      data: { ... },            // 数据（根据动作不同）
+      messageId: '123456'       // 可选，用于响应匹配
+    };
+    
+    // 编码后设置 hash
+    const hash = encodeURIComponent(JSON.stringify(command));
+    webView.src = `https://你的域名/index.html#${hash}`;
+    
+    -2. 支持的命令
+    
+    动作	    描述	                数据格式
+    
+    init	    初始化起点终点并计算路径	{ start: 起点数据, end: 终点数据 }
+    
+    setStart	设置起点	                起点数据
+    
+    setEnd	    设置终点	                终点数据
+    
+    calculate	计算路径	                无
+    
+    clear	    清除所有设置	            无
+    
+    getStatus	获取当前状态	            无
+    
+    -3. 数据格式
+    起点/终点数据（书架）
+    
+    -javascript
+    {
+      isDoor: false,
+      shelfIndex: 5,     // 1-14
+      face: 'front',      // 'front' 正面 / 'back' 背面
+      column: 2,          // 1-3列
+      row: 3              // 1-4层
+    }
+    
+    起点/终点数据（大门）
+    
+    -javascript
+    {
+      isDoor: true,
+      doorFace: 'outside' // 可选，默认 'outside'
+    }
+    
+    -4. 返回结果
+    
+    网页执行命令后，会通过 wx.miniProgram.postMessage 返回：
+    
+    -javascript
+    {
+      type: 'initResult',           // 动作名 + 'Result'
+      success: true,                 // 是否成功
+      data: { ... },                  // 返回数据
+      messageId: '123456',            // 对应命令的 messageId
+      timestamp: 1641024000000        // 时间戳
+    }
+    
+    // 错误时
+    {
+      type: 'error',
+      message: '错误信息',
+      command: 'init',
+      messageId: '123456'
+    }
+    
+    5. 小程序端监听
+    
+    -javascript
+    // 小程序 Page 中
+    Page({
+      onLoad() {
+        // 监听 web-view 返回的消息
+        wx.onMessage(this.handleMessage);
+      },
+      
+      handleMessage(res) {
+        console.log('收到网页消息:', res);
+        // 处理返回结果
+      }
+    });
+
 
 
 
