@@ -2746,6 +2746,9 @@
                     if (success) {
                         console.log('[API] 手动初始化成功');
                         
+                        // 处理可能已经存在的 hash 命令
+                        handleHashChange(); 
+                        
                         // 更新API状态显示
                         const statusElement = document.getElementById('apiStatus');
                         if (statusElement) {
@@ -2952,6 +2955,7 @@
 </body>
 
 </html>
+
 
 
 
