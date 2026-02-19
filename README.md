@@ -20,7 +20,7 @@
 
 -editor版本是可以调试API的
 
--user没有
+-user（现在的index.html）没有
 
 #3D_navigation_api.js方面：
 
@@ -201,6 +201,7 @@
     
     
 #如果GitHub无法引用，用微信云托管部署即可。
+
 
 
 
