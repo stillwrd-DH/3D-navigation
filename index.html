@@ -221,6 +221,231 @@
             max-width: none;
         }
     }
+
+    /* ===== 新增聊天面板样式 ===== */
+    #chatPanel {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 320px;
+        height: 450px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        z-index: 2000;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        transition: height 0.3s ease;
+    }
+
+    #chatPanel.minimized {
+        height: 50px;
+    }
+
+    .chat-header {
+        padding: 12px 16px;
+        background: #1f3f5f;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        font-weight: 600;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+
+    .chat-header i {
+        font-size: 18px;
+        transition: transform 0.3s;
+    }
+
+    .chat-header .minimize-icon {
+        transform: rotate(0deg);
+    }
+
+    #chatPanel.minimized .minimize-icon {
+        transform: rotate(180deg);
+    }
+
+    .chat-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        padding: 12px;
+    }
+
+    .api-key-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .api-key-row input {
+        flex: 1;
+        padding: 8px 12px;
+        border: 1px solid #cbd6e4;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        outline: none;
+        background: white;
+    }
+
+    .api-key-row input:focus {
+        border-color: #1f6eaf;
+        box-shadow: 0 0 0 3px rgba(31,110,175,0.1);
+    }
+
+    .api-key-row button {
+        background: white;
+        border: 1px solid #b0c8da;
+        border-radius: 30px;
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: #1e3a5f;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .api-key-row button:hover {
+        background: #e6eff9;
+    }
+
+    .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 12px;
+        padding-right: 4px;
+    }
+
+    .message {
+        display: flex;
+        flex-direction: column;
+        max-width: 85%;
+    }
+
+    .message-user {
+        align-self: flex-end;
+    }
+
+    .message-assistant {
+        align-self: flex-start;
+    }
+
+    .bubble {
+        padding: 8px 14px;
+        border-radius: 18px;
+        line-height: 1.4;
+        font-size: 0.85rem;
+        word-break: break-word;
+        white-space: pre-wrap;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .message-user .bubble {
+        background: #d9eafb;
+        border-bottom-right-radius: 4px;
+        color: #022b49;
+    }
+
+    .message-assistant .bubble {
+        background: #f0f4f9;
+        border-bottom-left-radius: 4px;
+        color: #1d2c3f;
+    }
+
+    .role-tag {
+        font-size: 0.65rem;
+        margin-bottom: 2px;
+        margin-left: 6px;
+        color: #4a668a;
+    }
+
+    .message-user .role-tag {
+        text-align: right;
+        margin-right: 6px;
+        color: #1a4972;
+    }
+
+    .chat-input-area {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .chat-input-area input {
+        flex: 1;
+        padding: 10px 16px;
+        border: 1px solid #cbd6e4;
+        border-radius: 30px;
+        font-size: 0.85rem;
+        background: #fafcff;
+        outline: none;
+    }
+
+    .chat-input-area input:focus {
+        border-color: #1f6eaf;
+    }
+
+    .chat-input-area input:disabled {
+        background: #edf2f7;
+    }
+
+    .chat-input-area button {
+        background: #1f3f5f;
+        border: none;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 30px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: 0.1s;
+        box-shadow: 0 2px 5px rgba(0,35,70,0.2);
+        white-space: nowrap;
+    }
+
+    .chat-input-area button:hover:not(:disabled) {
+        background: #163a55;
+    }
+
+    .chat-input-area button:disabled {
+        background: #a7b9ce;
+        cursor: not-allowed;
+    }
+
+    .chat-error {
+        color: #b91c1c;
+        font-size: 0.7rem;
+        padding: 4px 8px;
+        background: #fef2f2;
+        border-radius: 8px;
+        margin-top: 4px;
+        display: none;
+    }
+
+    .chat-error.show {
+        display: block;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        #chatPanel {
+            width: 280px;
+            height: 400px;
+            bottom: 10px;
+            right: 10px;
+        }
+    }
     </style>
 </head>
 <body>
@@ -257,6 +482,26 @@
             <div id="startInfo">起点: 未设置</div>
             <div id="endInfo">终点: 未设置</div>
             <div id="pathInfo" class="path-info">路径: 未计算</div>
+        </div>
+    </div>
+
+    <!-- 新增聊天面板 -->
+    <div id="chatPanel">
+        <div class="chat-header" id="chatHeader">
+            <span><i class="fas fa-robot" style="margin-right: 8px;"></i>图书馆AI助理</span>
+            <i class="fas fa-chevron-down minimize-icon" id="minimizeIcon"></i>
+        </div>
+        <div class="chat-content" id="chatContent">
+            <div class="api-key-row">
+                <input type="password" id="apiKeyInput" placeholder="DeepSeek API Key (sk-...)" value="">
+                <button id="resetChatBtn">重置</button>
+            </div>
+            <div class="chat-messages" id="chatMessages"></div>
+            <div class="chat-error" id="chatError"></div>
+            <div class="chat-input-area">
+                <input type="text" id="userInput" placeholder="例如：推荐一本人工智能的书" autocomplete="off">
+                <button id="sendBtn">发送</button>
+            </div>
         </div>
     </div>
     <script>
@@ -2404,62 +2649,62 @@
                 switch (command.action) {
 
                     case 'init':
-                    // 验证数据
-                    if (!command.data || !command.data.start || !command.data.end) {
+                        // 验证数据
+                        if (!command.data || !command.data.start || !command.data.end) {
+                            sendMessageToMiniProgram({
+                                type: 'error',
+                                message: 'init命令缺少start或end数据',
+                                command: command.action,
+                                messageId: command.messageId
+                            });
+                            return;
+                        }
+                        
+                        // 设置起点
+                        const startResult = LibraryNavigationAPI.setStartPoint(command.data.start);
+                        if (!startResult.success) {
+                            sendMessageToMiniProgram({
+                                type: 'error',
+                                message: '设置起点失败: ' + startResult.error,
+                                command: command.action,
+                                messageId: command.messageId
+                            });
+                            return;
+                        }
+                        
+                        // 设置终点
+                        const endResult = LibraryNavigationAPI.setEndPoint(command.data.end);
+                        if (!endResult.success) {
+                            sendMessageToMiniProgram({
+                                type: 'error',
+                                message: '设置终点失败: ' + endResult.error,
+                                command: command.action,
+                                messageId: command.messageId
+                            });
+                            return;
+                        }
+                        
+                        // 计算路径
+                        const calcResult = LibraryNavigationAPI.calculatePath();
+                        if (!calcResult.success) {
+                            sendMessageToMiniProgram({
+                                type: 'error',
+                                message: '计算路径失败: ' + calcResult.error,
+                                command: command.action,
+                                messageId: command.messageId
+                            });
+                            return;
+                        }
+                        
+                        // 全部成功，返回结果
                         sendMessageToMiniProgram({
-                            type: 'error',
-                            message: 'init命令缺少start或end数据',
-                            command: command.action,
-                            messageId: command.messageId
+                            type: 'initResult',
+                            success: true,
+                            data: { message: '初始化成功' },
+                            messageId: command.messageId,
+                            timestamp: Date.now()
                         });
-                        return;
-                    }
-                    
-                    // 设置起点
-                    const startResult = LibraryNavigationAPI.setStartPoint(command.data.start);
-                    if (!startResult.success) {
-                        sendMessageToMiniProgram({
-                            type: 'error',
-                            message: '设置起点失败: ' + startResult.error,
-                            command: command.action,
-                            messageId: command.messageId
-                        });
-                        return;
-                    }
-                    
-                    // 设置终点
-                    const endResult = LibraryNavigationAPI.setEndPoint(command.data.end);
-                    if (!endResult.success) {
-                        sendMessageToMiniProgram({
-                            type: 'error',
-                            message: '设置终点失败: ' + endResult.error,
-                            command: command.action,
-                            messageId: command.messageId
-                        });
-                        return;
-                    }
-                    
-                    // 计算路径
-                    const calcResult = LibraryNavigationAPI.calculatePath();
-                    if (!calcResult.success) {
-                        sendMessageToMiniProgram({
-                            type: 'error',
-                            message: '计算路径失败: ' + calcResult.error,
-                            command: command.action,
-                            messageId: command.messageId
-                        });
-                        return;
-                    }
-                    
-                    // 全部成功，返回结果
-                    sendMessageToMiniProgram({
-                        type: 'initResult',
-                        success: true,
-                        data: { message: '初始化成功' },
-                        messageId: command.messageId,
-                        timestamp: Date.now()
-                    });
-                    break;
+                        break;
                     case 'setStart':
                         result = LibraryNavigationAPI.setStartPoint(command.data);
                         break;
@@ -2645,6 +2890,310 @@
         }, 500);
     }
 
+            // ========== 新增聊天助理功能 ==========
+        (function() {
+            // --- 配置 ---
+            const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
+            const MODEL_NAME = 'deepseek-chat';
+
+            // --- 系统提示词 (强制末尾括号+书架) ---
+            const SYSTEM_MESSAGE = {
+                role: 'system',
+                content: '你是合肥工业大学图书馆的智能助理。你的核心任务是为读者推荐书籍。\n' +
+                         '每次回复时，你**必须**在末尾添加两个个小括号，括号内严格用例子的格式，指明所推荐书籍的具体书架位置。\n' +
+                         '（起点：大门，终点：书架13 背面 第1列第3层）\n' +
+                         '只有14个书架（书架1-14），三列四层。\n' +
+                         '你可以自由推荐各类书籍，并附上恰当的位置（哪怕编造一个合理的合工大书架号）。\n' +
+                         '如果用户只是打招呼，你也应该推荐一本书并附上括号。保持热情、专业的图书馆助理形象。'
+            };
+
+            // 初始助理消息
+            const initialAssistantMessage = {
+                role: 'assistant',
+                content: '同学你好，我是合肥工业大学图书馆助理。今天想为你推荐《科学革命的结构》。（起点：大门，终点：书架13 背面 第1列第3层）'
+            };
+
+            // 聊天状态
+            let chatHistory = [initialAssistantMessage];
+            let isLoading = false;
+            let apiReady = false; // API是否就绪（3D系统）
+
+            // DOM 元素
+            const chatMessages = document.getElementById('chatMessages');
+            const userInput = document.getElementById('userInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const apiKeyInput = document.getElementById('apiKeyInput');
+            const resetBtn = document.getElementById('resetChatBtn');
+            const chatError = document.getElementById('chatError');
+            const chatHeader = document.getElementById('chatHeader');
+            const chatPanel = document.getElementById('chatPanel');
+            const minimizeIcon = document.getElementById('minimizeIcon');
+
+            // --- 渲染聊天消息 ---
+            function renderMessages() {
+                chatMessages.innerHTML = '';
+                chatHistory.forEach(msg => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('message');
+                    messageDiv.classList.add(msg.role === 'user' ? 'message-user' : 'message-assistant');
+
+                    const roleTag = document.createElement('div');
+                    roleTag.classList.add('role-tag');
+                    roleTag.textContent = msg.role === 'user' ? '你' : '📘 图书馆助理';
+                    messageDiv.appendChild(roleTag);
+
+                    const bubble = document.createElement('div');
+                    bubble.classList.add('bubble');
+                    bubble.textContent = msg.content;
+                    messageDiv.appendChild(bubble);
+
+                    chatMessages.appendChild(messageDiv);
+                });
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // 添加消息到历史
+            function addMessage(role, content) {
+                chatHistory.push({ role, content });
+                renderMessages();
+            }
+
+            // 显示错误
+            function showError(text) {
+                chatError.textContent = text;
+                chatError.classList.add('show');
+            }
+
+            function hideError() {
+                chatError.classList.remove('show');
+            }
+
+            // --- 调用 DeepSeek API ---
+            async function fetchAssistantReply(userMessage) {
+                const apiKey = apiKeyInput.value.trim();
+                if (!apiKey) throw new Error('请输入 DeepSeek API 密钥');
+
+                const messagesForApi = [SYSTEM_MESSAGE, ...chatHistory];
+
+                const response = await fetch(DEEPSEEK_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: MODEL_NAME,
+                        messages: messagesForApi,
+                        temperature: 0.8,
+                        max_tokens: 800
+                    })
+                });
+
+                if (!response.ok) {
+                    let errorDetail = `HTTP ${response.status}`;
+                    try {
+                        const errData = await response.json();
+                        errorDetail = errData.error?.message || JSON.stringify(errData);
+                    } catch (e) {}
+                    throw new Error(`API 错误: ${errorDetail}`);
+                }
+
+                const data = await response.json();
+                const content = data.choices?.[0]?.message?.content;
+                if (!content) throw new Error('API 返回异常: 没有回复内容');
+                return content;
+            }
+
+            // --- 解析导航信息 ---
+            function parseNavigationInfo(text) {
+                // 提取括号内的内容
+                const bracketMatch = text.match(/（([^）]+)）/g);
+                if (!bracketMatch) return null;
+
+                // 取最后一个括号（可能多个，按规则应在末尾）
+                const lastBracket = bracketMatch[bracketMatch.length - 1];
+                const content = lastBracket.slice(1, -1); // 去掉括号
+
+                // 分割起点和终点
+                const parts = content.split('，');
+                let startText = '', endText = '';
+                for (let part of parts) {
+                    if (part.includes('起点：')) startText = part.replace('起点：', '').trim();
+                    if (part.includes('终点：')) endText = part.replace('终点：', '').trim();
+                }
+
+                if (!startText || !endText) return null;
+
+                // 解析起点
+                let startData = null;
+                if (startText.includes('大门')) {
+                    startData = { isDoor: true };
+                } else {
+                    const shelfMatch = startText.match(/书架(\d+)\s*(背面|正面)?\s*第(\d+)列第(\d+)层/);
+                    if (shelfMatch) {
+                        startData = {
+                            isDoor: false,
+                            shelfIndex: parseInt(shelfMatch[1]),
+                            face: shelfMatch[2] === '背面' ? 'back' : 'front',
+                            column: parseInt(shelfMatch[3]),
+                            row: parseInt(shelfMatch[4])
+                        };
+                    }
+                }
+
+                // 解析终点
+                let endData = null;
+                if (endText.includes('大门')) {
+                    endData = { isDoor: true };
+                } else {
+                    const shelfMatch = endText.match(/书架(\d+)\s*(背面|正面)?\s*第(\d+)列第(\d+)层/);
+                    if (shelfMatch) {
+                        endData = {
+                            isDoor: false,
+                            shelfIndex: parseInt(shelfMatch[1]),
+                            face: shelfMatch[2] === '背面' ? 'back' : 'front',
+                            column: parseInt(shelfMatch[3]),
+                            row: parseInt(shelfMatch[4])
+                        };
+                    }
+                }
+
+                if (!startData || !endData) return null;
+                return { start: startData, end: endData };
+            }
+
+            // --- 调用导航API设置起点终点并计算路径 ---
+            function applyNavigation(navInfo) {
+                if (!window.LibraryNavigationAPI) {
+                    showError('导航系统未就绪');
+                    return false;
+                }
+
+                // 清除当前设置（可选）
+                // LibraryNavigationAPI.clear();
+
+                // 设置起点
+                const startResult = LibraryNavigationAPI.setStartPoint(navInfo.start);
+                if (!startResult.success) {
+                    showError(`设置起点失败: ${startResult.error}`);
+                    return false;
+                }
+
+                // 设置终点
+                const endResult = LibraryNavigationAPI.setEndPoint(navInfo.end);
+                if (!endResult.success) {
+                    showError(`设置终点失败: ${endResult.error}`);
+                    return false;
+                }
+
+                // 计算路径
+                const calcResult = LibraryNavigationAPI.calculatePath();
+                if (!calcResult.success) {
+                    showError(`计算路径失败: ${calcResult.error}`);
+                    return false;
+                }
+
+                // 可选：在聊天中提示
+                addMessage('assistant', '✅ 已自动设置导航并计算路径');
+                return true;
+            }
+
+            // --- 发送消息 ---
+            async function handleSend() {
+                if (isLoading) return;
+
+                const userMsg = userInput.value.trim();
+                if (!userMsg) return;
+
+                if (!apiKeyInput.value.trim()) {
+                    showError('请输入 DeepSeek API 密钥');
+                    return;
+                }
+
+                if (!apiReady) {
+                    showError('3D导航系统正在初始化，请稍候...');
+                    return;
+                }
+
+                hideError();
+                addMessage('user', userMsg);
+                userInput.value = '';
+                isLoading = true;
+                sendBtn.disabled = true;
+                userInput.disabled = true;
+
+                try {
+                    const reply = await fetchAssistantReply(userMsg);
+                    addMessage('assistant', reply);
+
+                    // 解析并应用导航
+                    const navInfo = parseNavigationInfo(reply);
+                    if (navInfo) {
+                        applyNavigation(navInfo);
+                    } else {
+                        // 可选提示
+                        console.log('未解析到导航信息');
+                    }
+                } catch (error) {
+                    showError(error.message);
+                } finally {
+                    isLoading = false;
+                    sendBtn.disabled = false;
+                    userInput.disabled = false;
+                    userInput.focus();
+                }
+            }
+
+            // --- 重置对话 ---
+            function resetConversation() {
+                chatHistory = [initialAssistantMessage];
+                renderMessages();
+                hideError();
+            }
+
+            // --- 监听API就绪 ---
+            function waitForAPI() {
+                if (window.LibraryNavigationAPI && window.LibraryNavigationAPI._ready) {
+                    apiReady = true;
+                    sendBtn.disabled = false;
+                    userInput.disabled = false;
+                    console.log('聊天助理：导航API已就绪');
+                } else {
+                    setTimeout(waitForAPI, 500);
+                }
+            }
+            waitForAPI();
+
+            // --- 事件绑定 ---
+            sendBtn.addEventListener('click', handleSend);
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSend();
+                }
+            });
+            resetBtn.addEventListener('click', resetConversation);
+            apiKeyInput.addEventListener('input', hideError);
+
+            // 面板最小化
+            chatHeader.addEventListener('click', () => {
+                chatPanel.classList.toggle('minimized');
+                minimizeIcon.style.transform = chatPanel.classList.contains('minimized') ? 'rotate(180deg)' : 'rotate(0deg)';
+            });
+
+            // 初始渲染
+            renderMessages();
+
+            // 如果API已就绪，启用输入
+            if (window.LibraryNavigationAPI && window.LibraryNavigationAPI._ready) {
+                apiReady = true;
+                sendBtn.disabled = false;
+                userInput.disabled = false;
+            }
+        })();
+
+
+
         function animate() {
             requestAnimationFrame(animate);
             
@@ -2730,7 +3279,6 @@
     <script src="3D_navigation_api.js"></script>
 </body>
 </html>
-
 
 
 
