@@ -2,13 +2,15 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>经纬阅读</title>
+    <title>3D图书馆导航系统</title>
     
     <!-- Three.js 核心库 -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
     <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <!-- 加载环境变量（API Key） -->
+    <script src="env.js"></script>
     
     <!-- 字体图标库（如果还没有的话） -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -492,10 +494,6 @@
             <i class="fas fa-chevron-down minimize-icon" id="minimizeIcon"></i>
         </div>
         <div class="chat-content" id="chatContent">
-            <div class="api-key-row">
-                <input type="password" id="apiKeyInput" placeholder="DeepSeek API Key (sk-...)" value="">
-                <button id="resetChatBtn">重置</button>
-            </div>
             <div class="chat-messages" id="chatMessages"></div>
             <div class="chat-error" id="chatError"></div>
             <div class="chat-input-area">
@@ -1272,10 +1270,6 @@
         }
 
         // ========== 可视化路径 ==========
-        // ========== 可视化路径（带状的路径平面） ==========
-        // ========== 可视化路径（真正的二维带状平面） ==========
-    // ========== 可视化路径（带白色箭头的二维带状平面） ==========
-        // ========== 可视化路径（带正确方向箭头的二维带状平面） ==========
         function visualizePathWithArrows(path) {
             console.log("开始绘制带正确方向箭头的二维带状路径...");
             
@@ -2899,7 +2893,7 @@
             // --- 系统提示词 (强制末尾括号+书架) ---
             const SYSTEM_MESSAGE = {
                 role: 'system',
-                content: '你是合肥工业大学图书馆的智能助理。你的核心任务是为读者推荐书籍。\n' +
+                content: '你是图书馆的智能助理。你的核心任务是为读者推荐书籍。\n' +
                          '每次回复时，你**必须**在末尾添加两个个小括号，括号内严格用例子的格式，指明所推荐书籍的具体书架位置。\n' +
                          '（起点：大门，终点：书架13 背面 第1列第3层）\n' +
                          '只有14个书架（书架1-14），三列四层。\n' +
@@ -2910,7 +2904,7 @@
             // 初始助理消息
             const initialAssistantMessage = {
                 role: 'assistant',
-                content: '同学你好，我是合肥工业大学图书馆助理。今天想为你推荐《科学革命的结构》。（起点：大门，终点：书架13 背面 第1列第3层）'
+                content: '同学你好，我是图书馆助理。今天想为你推荐《科学革命的结构》。（起点：大门，终点：书架13 背面 第1列第3层）'
             };
 
             // 聊天状态
@@ -2922,7 +2916,6 @@
             const chatMessages = document.getElementById('chatMessages');
             const userInput = document.getElementById('userInput');
             const sendBtn = document.getElementById('sendBtn');
-            const apiKeyInput = document.getElementById('apiKeyInput');
             const resetBtn = document.getElementById('resetChatBtn');
             const chatError = document.getElementById('chatError');
             const chatHeader = document.getElementById('chatHeader');
@@ -2970,8 +2963,8 @@
 
             // --- 调用 DeepSeek API ---
             async function fetchAssistantReply(userMessage) {
-                const apiKey = apiKeyInput.value.trim();
-                if (!apiKey) throw new Error('请输入 DeepSeek API 密钥');
+                const apiKey = window.API_KEY;   // 从全局变量读取
+                if (!apiKey) throw new Error('请在 env.js 中配置有效的 API Key');
 
                 const messagesForApi = [SYSTEM_MESSAGE, ...chatHistory];
 
@@ -3105,11 +3098,6 @@
                 const userMsg = userInput.value.trim();
                 if (!userMsg) return;
 
-                if (!apiKeyInput.value.trim()) {
-                    showError('请输入 DeepSeek API 密钥');
-                    return;
-                }
-
                 if (!apiReady) {
                     showError('3D导航系统正在初始化，请稍候...');
                     return;
@@ -3172,8 +3160,7 @@
                     handleSend();
                 }
             });
-            resetBtn.addEventListener('click', resetConversation);
-            apiKeyInput.addEventListener('input', hideError);
+
 
             // 面板最小化
             chatHeader.addEventListener('click', () => {
@@ -3279,12 +3266,3 @@
     <script src="3D_navigation_api.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
