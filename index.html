@@ -602,7 +602,7 @@
                 }
                 // 更新系统提示词并重置聊天历史
                 resetChatHistoryWithBookData();
-                addMessage('assistant', `📚 图书清单加载成功！共 ${bookIndex.size} 本图书。现在你可以询问任何书籍，我会根据真实位置为你导航。`);
+                addMessage('assistant', `📚 图书清单加载成功！现在你可以询问任何书籍，我会根据真实位置为你导航。`);
             } catch (error) {
                 console.error('加载图书位置失败:', error);
                 addMessage('assistant', '⚠️ 未能自动加载图书位置清单，将使用编造位置进行推荐。请确保 data/book_poszition.xlsx 文件存在且可访问。');
